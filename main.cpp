@@ -6,25 +6,24 @@
 
 int main( ) {
    using namespace tuddbs;
-   std::cout << "Hello, World!" << std::endl;
 
-   std::vector< void * > vec;
-
-   for( std::size_t i = 0; i < 3; ++i ) {
-      vec.push_back( acquire( 16 * sizeof( uint64_t ), 64, i, "st iteration" ) );
-
+//   void * data = malloc( 16 * sizeof( uint64_t ) );
+//   void * data2 = malloc( 16 * sizeof( uint64_t ) );
+   void * data = acquire( 16 * sizeof( uint64_t ), 64, "");
+   void * data2 = acquire( 16 * sizeof( uint64_t ), 64, "");
+   uint64_t * data_64 = ( uint64_t * ) data;
+   uint64_t * data2_64 = ( uint64_t * ) data2;
+   for( std::size_t i = 0; i < 20; ++i ) {
+      data_64[ i ] = i;
+      data2_64[ i ] = i+1;
    }
-   std::size_t c = 0;
-   for( auto a : vec ) {
-      uint64_t * b = ( uint64_t * ) a;
-      for( std::size_t i = 0; i < 17; ++i ) {
-         b[ i ] = 0x808080;
-      }
-      inspect( a );
+   for( std::size_t i = 0; i < 16; ++i ) {
+      std::cerr << data_64[ i ] << "\n";
    }
-   for( auto a : vec ) {
-      release( a );
-   }
+   release( data2 );
+   release( data );
+//   free( data2 );
+//   free( data );
 
 
    return 0;
