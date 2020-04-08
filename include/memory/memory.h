@@ -33,7 +33,7 @@
 #include <cstddef>
 
 namespace tuddbs {
-#ifdef DEBUG
+#ifdef MEMORY_DEBUG
    using decorator_chain_t =
       alignment_decorator<
          debug_decorator<
@@ -95,7 +95,7 @@ namespace tuddbs {
       void * const ptr_front = validator_chain_t::get_root( decorator_chain_t::get_root( p ) );
       allocator_t::instance()->deallocate( ptr_front );
    }
-#define acquire(size, alignment, ...) acquire_impl(size, alignment, __FILE__, __LINE__, __VA_ARGS__ )
+#define acquire(size, alignment) acquire_impl(size, alignment, __FILE__, __LINE__)
 #define release( ptr ) release_impl(ptr, __FILE__, __LINE__)
 #define inspect( ptr ) inspect_impl(ptr, __FILE__, __LINE__)
 #else
@@ -106,16 +106,16 @@ namespace tuddbs {
    using allocator_t = dram_allocator;
 
    template< class... Args >
-   void * aquire_impl( std::size_t size, Args... args ) {
+   void * acquire_impl( std::size_t size, Args... args ) {
       std::size_t size_to_allocate = size + decorator_chain_t::get_size_needed( args... );
       void * result  = allocator_t::instance()->allocate( size_to_allocate );
-      return decorator_chain_t::decorate( result, args... );
+      return decorator_chain_t::decorate( result, size, args... );
    }
    void release_impl( void * const p ) {
-      void * const ptr_front = decorator_chain_t::get_root( p ) );
+      void * const ptr_front = decorator_chain_t::get_root( p ) ;
       allocator_t::instance()->deallocate( ptr_front );
    }
-#define acquire(size, alignment, ...) acquire_impl(size, 64, __VA_ARGS__)
+#define acquire(size, alignment) acquire_impl(size, alignment)
 #define release( ptr ) release_impl( ptr )
 #define inspect( ptr )
 #endif

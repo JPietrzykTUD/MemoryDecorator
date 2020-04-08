@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(MemoryDecorator)
 
 IF(CMAKE_BUILD_TYPE MATCHES Debug)
-    add_definitions("-DDEBUG=True")
+    add_definitions("-DMEMORY_DEBUG=True")
     message("Debug build.")
     set(OPTIMIZER_FLAGS "-g -O0")
 ELSEIF(CMAKE_BUILD_TYPE MATCHES Release)
