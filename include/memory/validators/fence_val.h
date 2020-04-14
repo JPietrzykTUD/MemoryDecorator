@@ -65,9 +65,6 @@ namespace tuddbs {
          static bool validate( ptr_t & p ) {
             bool result = NestedValidator::validate( p );
             uint64_t * tmp = ( uint64_t * ) p.data();
-            bool first = true;
-            bool everything_ok = true;
-            bool corrupted_block = false;
             std::size_t lower = 0;
             for( std::size_t i = 0; i < fence_buffer_size / sizeof( uint64_t ); ++i ) {
                if( tmp[ i ] != FENCE_VALUE ) {
@@ -84,9 +81,6 @@ namespace tuddbs {
             void * ptr;
             std::tie( result, ptr ) = NestedValidator::validate( p );
             uint64_t * tmp = ( uint64_t * ) ptr;
-            bool first = true;
-            bool everything_ok = true;
-            bool corrupted_block = false;
             std::size_t lower = 0;
             for( std::size_t i = 0; i < fence_buffer_size / sizeof( uint64_t ); ++i ) {
                if( tmp[ i ] != FENCE_VALUE ) {
