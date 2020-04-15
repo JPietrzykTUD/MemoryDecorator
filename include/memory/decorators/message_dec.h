@@ -21,6 +21,7 @@
 #include <utils/literals.h>
 #include <utils/string.h>
 #include <memory/types.h>
+#include <utils/types.h>
 #include <cstddef>
 #include <cstring>
 #include <string>
@@ -50,8 +51,8 @@ namespace tuddbs {
 
          template< class... Args >
          static void * decorate( void * const p, Args... args ) {
-            std::byte * ptr = ( std::byte * ) NestedDecorator::decorate( p );
-            std::byte * ptr_orig = ptr;
+            byte * ptr = ( byte * ) NestedDecorator::decorate( p );
+            byte * ptr_orig = ptr;
             ptr += offset_from_start;
             std::string message_str = concat( { toString( args )... } );
             std::size_t length = message_str.length();
@@ -64,10 +65,10 @@ namespace tuddbs {
 
          template< class... Args >
          static void * verbose( void * const p, Args... args ) {
-            std::byte * ptr = ( std::byte * ) NestedDecorator::verbose( p );
-            std::byte * ptr_orig = ptr;
+            byte * ptr = ( byte * ) NestedDecorator::verbose( p );
+            byte * ptr_orig = ptr;
             ptr += offset_from_start;
-            std::byte tmp[ sizeof( std::size_t ) ];
+            byte tmp[ sizeof( std::size_t ) ];
             std::memcpy( ( void * ) tmp, ( void const * )ptr, sizeof( std::size_t ) );
             std::size_t length = *(( std::size_t *) tmp);
             std::string message_string( ( char * const ) ( ptr + sizeof( std::size_t ) ), ( char * const ) ( ptr + sizeof( std::size_t ) + length ) );
@@ -77,7 +78,7 @@ namespace tuddbs {
          }
 
          static void * get_root( void * const p ) {
-            std::byte * ptr = ( std::byte * ) p;
+            byte * ptr = ( byte * ) p;
             ptr -= ( get_own_size_needed( ) );
             return NestedDecorator::get_root( ( void * const ) ptr );
          }

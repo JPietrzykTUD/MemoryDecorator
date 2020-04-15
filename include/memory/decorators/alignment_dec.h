@@ -20,6 +20,7 @@
 #include <utils/singleton.h>
 #include <utils/literals.h>
 #include <utils/string.h>
+#include <utils/types.h>
 #include <memory/types.h>
 #include <cstddef>
 #include <cstring>
@@ -45,7 +46,7 @@ namespace tuddbs {
 
          template< class... Args >
          static void * decorate( void * const p, std::size_t size, std::size_t alignment, Args... args ) {
-            std::byte * ptr = ( std::byte * ) NestedDecorator::decorate( p, args... );
+            byte * ptr = ( byte * ) NestedDecorator::decorate( p, args... );
             std::size_t ptr_value = ( std::size_t ) ( ptr + 3 * sizeof( std::size_t ) );
             std::size_t align_value = sizeof( std::size_t ) + ( alignment - ( ptr_value & ( alignment - 1 ) ) );
             std::memcpy( ( void * ) ptr, ( void const * ) &size, sizeof( std::size_t ) );
@@ -59,9 +60,9 @@ namespace tuddbs {
 
          template< class... Args >
          static void * verbose( void * const p, Args... args ) {
-            std::byte * ptr = ( std::byte * ) NestedDecorator::verbose( p, args... );
-            std::byte * const ptr_orig = ptr;
-            std::byte tmp[ sizeof( std::size_t ) ];
+            byte * ptr = ( byte * ) NestedDecorator::verbose( p, args... );
+            byte * const ptr_orig = ptr;
+            byte tmp[ sizeof( std::size_t ) ];
             std::memcpy( ( void * ) tmp, ( void const * )ptr, sizeof( std::size_t ) );
             std::cerr << "{ Allocated Size: " <<  *(( std::size_t *) tmp) << ". ";
             std::memcpy( ( void * ) tmp, ( void const * )( ptr + sizeof( std::size_t ) ), sizeof( std::size_t ) );
@@ -78,16 +79,16 @@ namespace tuddbs {
          }
 
          static void * get_root( void * const p ) {
-            std::byte * ptr = ( std::byte * ) p;
-            std::byte tmp[ sizeof( std::size_t ) ];
+            byte * ptr = ( byte * ) p;
+            byte tmp[ sizeof( std::size_t ) ];
             std::memcpy( ( void * ) tmp, ( void const * )( ptr - sizeof( std::size_t ) ), sizeof( std::size_t ) );
             ptr -= ( 2*sizeof( std::size_t ) + ( *(( std::size_t *) tmp) ) );
             return NestedDecorator::get_root( ( void * const ) ptr );
          }
 
          static std::size_t get_size_from_ptr( void * const p ) {
-            std::byte * ptr = ( std::byte * ) p;
-            std::byte tmp[ sizeof( std::size_t ) ];
+            byte * ptr = ( byte * ) p;
+            byte tmp[ sizeof( std::size_t ) ];
             std::memcpy( ( void * ) tmp, ( void const * )( ptr - sizeof( std::size_t ) ), sizeof( std::size_t ) );
             ptr -= ( 2*sizeof( std::size_t ) + ( *(( std::size_t *) tmp) ) );
             std::memcpy( ( void * ) tmp, ( void const * )ptr, sizeof( std::size_t ) );

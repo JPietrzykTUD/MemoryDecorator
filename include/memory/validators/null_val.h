@@ -20,6 +20,7 @@
 #include <utils/singleton.h>
 #include <utils/literals.h>
 #include <memory/types.h>
+#include <utils/types.h>
 #include <cstddef>
 #include <cstring>
 #include <string>

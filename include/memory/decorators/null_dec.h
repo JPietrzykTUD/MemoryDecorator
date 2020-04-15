@@ -21,6 +21,7 @@
 #include <utils/literals.h>
 #include <utils/string.h>
 #include <memory/types.h>
+#include <utils/types.h>
 #include <cstddef>
 #include <cstring>
 #include <string>

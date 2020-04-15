@@ -20,6 +20,7 @@
 #include <utils/singleton.h>
 #include <utils/literals.h>
 #include <memory/types.h>
+#include <utils/types.h>
 #include <cstddef>
 #include <cstring>
 #include <string>
@@ -48,7 +49,7 @@ namespace tuddbs {
          }
          template< class... Args >
          static void * decorate( void * const p, Args... args ) {
-            std::byte * ptr = ( std::byte * ) NestedDecorator::decorate( p, args... );
+            byte * ptr = ( byte * ) NestedDecorator::decorate( p, args... );
             std::size_t val = sequence_number_decorator< NestedDecorator >::instance()->get_and_inc( );
             std::memcpy( ( void * ) ptr, ( void const * ) &val, sizeof( std::size_t ) );
             ptr += get_own_size_needed( );
@@ -57,8 +58,8 @@ namespace tuddbs {
 
          template< class... Args >
          static void * verbose( void * const p, Args... args ) {
-            std::byte * ptr = ( std::byte * ) NestedDecorator::verbose( p, args... );
-            std::byte tmp[ sizeof( std::size_t ) ];
+            byte * ptr = ( byte * ) NestedDecorator::verbose( p, args... );
+            byte tmp[ sizeof( std::size_t ) ];
             std::memcpy( ( void * ) tmp, ( void const * )ptr, sizeof( std::size_t ) );
             std::cerr << "Allocation #" <<  *(( std::size_t *) tmp) << ". ";
             ptr += get_own_size_needed( );
@@ -66,7 +67,7 @@ namespace tuddbs {
          }
 
          static void * get_root( void * const p ) {
-            std::byte * ptr = ( std::byte * ) p;
+            byte * ptr = ( byte * ) p;
             ptr -= ( get_own_size_needed( ) );
             return NestedDecorator::get_root( ( void * const ) ptr );
          }

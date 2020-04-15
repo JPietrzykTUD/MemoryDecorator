@@ -18,6 +18,7 @@
 #define TUDDBS_MEMORYDECORATOR_INCLUDE_MEMORY_TYPES_H
 
 #include <cstddef>
+#include <utils/types.h>
 
 namespace tuddbs {
 
@@ -33,11 +34,11 @@ namespace tuddbs {
             m_data = m_orig;
          }
       private:
-         std::byte * m_orig;
-         std::byte * m_data;
+         byte * m_orig;
+         byte * m_data;
          std::size_t m_size;
       public:
-         ptr_t( void * const p_p, std::size_t p_size ) : m_orig{ ( std::byte * ) p_p }, m_data{ m_orig },  m_size{ p_size } {}
+         ptr_t( void * const p_p, std::size_t p_size ) : m_orig{ ( byte * ) p_p }, m_data{ m_orig },  m_size{ p_size } {}
          void * data() const { return ( void * ) m_data; }
          void * orig() const { return ( void * ) m_orig; }
          std::size_t size() const { return m_size; }

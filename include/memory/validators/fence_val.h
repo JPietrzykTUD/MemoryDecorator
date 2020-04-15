@@ -20,6 +20,7 @@
 #include <utils/singleton.h>
 #include <utils/literals.h>
 #include <memory/types.h>
+#include <utils/types.h>
 #include <cstddef>
 #include <cstring>
 #include <string>
@@ -53,7 +54,7 @@ namespace tuddbs {
          }
 
          static void * decorate( void * const p ) {
-            std::byte * ptr = ( std::byte * ) NestedValidator::decorate( p );
+            byte * ptr = ( byte * ) NestedValidator::decorate( p );
             uint64_t * tmp = ( uint64_t * ) ptr;
             for( std::size_t i = 0; i < fence_buffer_size / sizeof( uint64_t ); ++i ) {
                tmp[ i ] = FENCE_VALUE;
@@ -86,7 +87,7 @@ namespace tuddbs {
                   break;
                }
             }
-            return std::make_tuple( result, ( void * ) ( ( std::byte * ) ptr + fence_buffer_size ) );
+            return std::make_tuple( result, ( void * ) ( ( byte * ) ptr + fence_buffer_size ) );
          }
 
          static ptr_t verbose( ptr_t & p ) {
@@ -120,7 +121,7 @@ namespace tuddbs {
          }
 
          static void * verbose( void * const p ) {
-            std::byte * ptr = ( std::byte * ) NestedValidator::verbose( p );
+            byte * ptr = ( byte * ) NestedValidator::verbose( p );
             uint64_t * tmp = ( uint64_t * ) ptr;
             bool everything_ok = true;
             bool corrupted_block = false;
@@ -150,7 +151,7 @@ namespace tuddbs {
          }
 
          static void * get_root( void * const p ) {
-            std::byte * ptr = ( std::byte * ) p;
+            byte * ptr = ( byte * ) p;
             ptr -= ( get_own_size_needed() );
             return NestedValidator::get_root( ( void * const ) ptr );
          }
