@@ -83,7 +83,7 @@ namespace tuddbs {
             byte tmp[ sizeof( std::size_t ) ];
             std::memcpy( ( void * ) tmp, ( void const * )( ptr - sizeof( std::size_t ) ), sizeof( std::size_t ) );
             ptr -= ( 2*sizeof( std::size_t ) + ( *(( std::size_t *) tmp) ) );
-            return NestedDecorator::get_root( ( void * const ) ptr );
+            return NestedDecorator::get_root( ( void * ) ptr );
          }
 
          static std::size_t get_size_from_ptr( void * const p ) {
