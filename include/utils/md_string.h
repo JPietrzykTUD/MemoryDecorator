@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_STRING_H
-#define TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_STRING_H
+#ifndef TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_MD_STRING_H
+#define TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_MD_STRING_H
 
 #include <string>
 #include <sstream>
@@ -37,4 +37,4 @@ namespace tuddbs {
    }
 }
 
-#endif //TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_STRING_H
+#endif //TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_MD_STRING_H

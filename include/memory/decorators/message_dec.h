@@ -17,10 +17,11 @@
 #ifndef TUDDBS_MEMORYDECORATOR_INCLUDE_MEMORY_DECORATORS_MESSAGE_DEC_H
 #define TUDDBS_MEMORYDECORATOR_INCLUDE_MEMORY_DECORATORS_MESSAGE_DEC_H
 
-#include <utils/singleton.h>
-#include <utils/literals.h>
-#include <utils/string.h>
-#include <utils/types.h>
+#include <utils/md_singleton.h>
+#include <utils/md_literals.h>
+#include <utils/md_string.h>
+#include <utils/md_types.h>
+#include <utils/md_preprocessor.h>
 #include <cstddef>
 #include <cstring>
 #include <string>
@@ -44,7 +45,7 @@ namespace tuddbs {
 
       public:
          template< class... Args >
-         static std::size_t get_size_needed( Args... args ) {
+         static std::size_t get_size_needed( UNUSED Args... args ) {
             return get_own_size_needed( ) + NestedDecorator::get_size_needed( );
          }
 
@@ -63,7 +64,7 @@ namespace tuddbs {
 
 
          template< class... Args >
-         static void * verbose( void * const p, Args... args ) {
+         static void * verbose( void * const p, UNUSED Args... args ) {
             byte * ptr = ( byte * ) NestedDecorator::verbose( p );
             byte * ptr_orig = ptr;
             ptr += offset_from_start;

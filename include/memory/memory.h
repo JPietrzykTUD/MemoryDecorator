@@ -25,7 +25,7 @@
 #include <memory/decorators/null_dec.h>
 #include <memory/validators/fence_val.h>
 #include <memory/validators/null_val.h>
-#include <utils/types.h>
+#include <utils/md_types.h>
 
 #include <memory/allocators/dram_alloc.h>
 
@@ -61,7 +61,7 @@ namespace tuddbs {
    }
 
    template< class... Args >
-   bool inspect_impl( void * const p, char const * file_name, std::size_t line_number ) {
+   bool inspect_impl( void * const p, UNUSED char const * file_name, UNUSED std::size_t line_number ) {
 //      std::cout << "Inspect called: " << file_name << ":" << line_number << "\n";
       std::size_t requested_size = decorator_chain_t::get_size_from_ptr( p );
       void * const ptr_back = ( void * const ) ( ( byte * ) p + requested_size );

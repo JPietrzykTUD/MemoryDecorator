@@ -15,5 +15,7 @@ ENDIF()
 
 set(CMAKE_CXX_STANDARD 17)
 include_directories( ${PROJECT_SOURCE_DIR}/include)
+set(GENERAL_COMPILE_WARNINGS_DEFINITIONS "-Werror;-Wall;-Wextra;-pedantic")
 
 add_executable(MemoryDecorator main.cpp)
+target_compile_options(MemoryDecorator PRIVATE "${GENERAL_COMPILE_WARNINGS_DEFINITIONS}")

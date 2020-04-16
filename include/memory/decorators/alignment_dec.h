@@ -17,10 +17,10 @@
 #ifndef TUDDBS_MEMORYDECORATOR_INCLUDE_MEMORY_DECORATORS_ALIGNMENT_DEC_H
 #define TUDDBS_MEMORYDECORATOR_INCLUDE_MEMORY_DECORATORS_ALIGNMENT_DEC_H
 
-#include <utils/singleton.h>
-#include <utils/literals.h>
-#include <utils/string.h>
-#include <utils/types.h>
+#include <utils/md_singleton.h>
+#include <utils/md_literals.h>
+#include <utils/md_string.h>
+#include <utils/md_types.h>
 #include <cstddef>
 #include <cstring>
 #include <string>

@@ -17,9 +17,9 @@
 #ifndef TUDDBS_MEMORYDECORATOR_INCLUDE_MEMORY_DECORATORS_SEQUENCE_NUMBER_DECORATOR_H
 #define TUDDBS_MEMORYDECORATOR_INCLUDE_MEMORY_DECORATORS_SEQUENCE_NUMBER_DECORATOR_H
 
-#include <utils/singleton.h>
-#include <utils/literals.h>
-#include <utils/types.h>
+#include <utils/md_singleton.h>
+#include <utils/md_literals.h>
+#include <utils/md_types.h>
 #include <cstddef>
 #include <cstring>
 #include <string>

@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_SINGLETON_H
-#define TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_SINGLETON_H
+#ifndef TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_MD_SINGLETON_H
+#define TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_MD_SINGLETON_H
 
 namespace tuddbs {
    template< typename T >
@@ -44,4 +44,4 @@ namespace tuddbs {
    T * singleton< T >::_instance = 0;
 }
 
-#endif //TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_SINGLETON_H
+#endif //TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_MD_SINGLETON_H

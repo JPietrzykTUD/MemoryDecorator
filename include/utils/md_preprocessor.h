@@ -1,5 +1,5 @@
 /* 
- * This file is part of the MemoryDecorator Project (https://github.com/JPietrzykTUD/MemoryDecorator).
+ * This file is part of the SIMQ Project (https://github.com/JPietrzykTUD/SIMQ).
  * Copyright (c) 2020 Johannes Pietrzyk.
  * 
  * This program is free software: you can redistribute it and/or modify  
@@ -14,13 +14,18 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_LITERALS_H
-#define TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_LITERALS_H
+#ifndef TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_PREPROCESSOR_H
+#define TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_PREPROCESSOR_H
 
-namespace tuddbs {
-   constexpr long double operator"" _KB( unsigned long long int bytes ) {
-      return bytes * 1024;
-   }
-}
 
-#endif //TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_LITERALS_H
+#ifdef C17
+#ifndef UNUSED
+#define UNUSED [[maybe_unused]]
+#endif
+#else
+#ifndef UNUSED
+#define UNUSED __attribute__((unused))
+#endif
+#endif
+
+#endif //TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_PREPROCESSOR_H
