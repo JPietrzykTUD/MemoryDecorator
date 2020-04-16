@@ -19,7 +19,6 @@
 
 #include <utils/singleton.h>
 #include <utils/literals.h>
-#include <memory/types.h>
 #include <utils/types.h>
 #include <cstddef>
 #include <cstring>
@@ -43,15 +42,6 @@ namespace tuddbs {
          static std::size_t get_size_needed( void ) {
             return get_own_size_needed( ) + NestedValidator::get_size_needed( );
          }
-         static ptr_t & decorate( ptr_t & p ) {
-            p = NestedValidator::decorate( p );
-            uint64_t * tmp = ( uint64_t * ) p.data();
-            for( std::size_t i = 0; i < fence_buffer_size / sizeof( uint64_t ); ++i ) {
-               tmp[ i ] = FENCE_VALUE;
-            }
-            p.advance( get_own_size_needed() );
-            return p;
-         }
 
          static void * decorate( void * const p ) {
             byte * ptr = ( byte * ) NestedValidator::decorate( p );
@@ -61,19 +51,6 @@ namespace tuddbs {
             }
             ptr += get_own_size_needed( );
             return ptr;
-         }
-
-         static bool validate( ptr_t & p ) {
-            bool result = NestedValidator::validate( p );
-            uint64_t * tmp = ( uint64_t * ) p.data();
-            for( std::size_t i = 0; i < fence_buffer_size / sizeof( uint64_t ); ++i ) {
-               if( tmp[ i ] != FENCE_VALUE ) {
-                  result = false;
-                  break;
-               }
-            }
-            p.advance( fence_buffer_size );
-            return ( result );
          }
 
          static std::tuple< bool, void * > validate( void * const p )  {
@@ -88,36 +65,6 @@ namespace tuddbs {
                }
             }
             return std::make_tuple( result, ( void * ) ( ( byte * ) ptr + fence_buffer_size ) );
-         }
-
-         static ptr_t verbose( ptr_t & p ) {
-            p = NestedValidator::verbose( p );
-            uint64_t * tmp = ( uint64_t * ) p.data();
-            bool everything_ok = true;
-            bool corrupted_block = false;
-            std::size_t lower = 0;
-            for( std::size_t i = 0; i < fence_buffer_size / sizeof( uint64_t ); ++i ) {
-               if( tmp[ i ] == FENCE_VALUE ) {
-                  if( corrupted_block ) {
-                     std::cerr << lower * sizeof( uint64_t ) << " - " << i * sizeof( uint64_t ) << ". ";
-                     corrupted_block = false;
-                  }
-               } else {
-                  if( !corrupted_block ) {
-                     std::cerr << "Corrupted Bytes: ";
-                     lower = i;
-                     everything_ok = false;
-                     corrupted_block = true;
-                  }
-               }
-            }
-            if( !everything_ok ) {
-               if( corrupted_block ) {
-                  std::cerr << lower * sizeof( uint64_t ) << " - " << fence_buffer_size << " (END). ";
-               }
-            }
-            p.advance( fence_buffer_size );
-            return p;
          }
 
          static void * verbose( void * const p ) {

@@ -17,7 +17,6 @@
 #ifndef TUDDBS_MEMORYDECORATOR_INCLUDE_MEMORY_ALLOCATORS_DRAM_ALLOC_H
 #define TUDDBS_MEMORYDECORATOR_INCLUDE_MEMORY_ALLOCATORS_DRAM_ALLOC_H
 
-#include <memory/types.h>
 #include <utils/singleton.h>
 
 #include <cstdint>

@@ -19,7 +19,6 @@
 
 #include <utils/singleton.h>
 #include <utils/literals.h>
-#include <memory/types.h>
 #include <utils/types.h>
 #include <cstddef>
 #include <cstring>
@@ -33,20 +32,9 @@ namespace tuddbs {
          static std::size_t get_size_needed( void ) {
             return 0;
          }
-         static ptr_t & decorate( ptr_t & p ) {
-            return p;
-         }
          static void * decorate( void * const p ) { return p; }
 
-         static bool validate( ptr_t & p ) {
-            return true;
-         }
-
          static std::tuple< bool, void * > validate( void * const p ) { return std::make_tuple( true, p ); }
-
-         static ptr_t verbose( ptr_t & p ) {
-            return p;
-         }
 
          static void * verbose( void * const p ) { return p; }
 

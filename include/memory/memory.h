@@ -17,7 +17,6 @@
 #ifndef TUDDBS_MEMORYDECORATOR_INCLUDE_MEMORY_MEMORY_H
 #define TUDDBS_MEMORYDECORATOR_INCLUDE_MEMORY_MEMORY_H
 
-#include <memory/types.h>
 
 #include <memory/decorators/debug_dec.h>
 #include <memory/decorators/sequence_number_dec.h>
