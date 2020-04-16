@@ -19,6 +19,7 @@
 
 #include <cstddef>
 #include <utils/types.h>
+#include <ostream>
 
 namespace tuddbs {
 
