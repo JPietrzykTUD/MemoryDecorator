@@ -28,11 +28,19 @@
 #include <utils/md_types.h>
 
 #include <memory/allocators/dram_alloc.h>
-
+#ifdef HAS_MCD
+#include <memory/allocators/mcdram_alloc.h>
+#endif
 
 #include <cstddef>
 
 namespace tuddbs {
+#ifdef HAS_MCD
+   using allocator_t = mcdram_allocator;
+#else
+   using allocator_t = dram_allocator;
+#endif
+
 #ifdef MEMORY_DEBUG
    using decorator_chain_t =
       alignment_decorator<
@@ -48,12 +56,21 @@ namespace tuddbs {
       fence_validator<
          null_validator
       >;
-   using allocator_t = dram_allocator;
 
    template< class... Args >
-   void * acquire_impl( std::size_t size, Args... args ) {
+   void * acquire_impl(
+      std::size_t size,
+#ifdef HAS_MCD
+      bool use_mcd,
+#endif
+      Args... args
+   ) {
       std::size_t size_to_allocate = size + 2 * validator_chain_t::get_size_needed( ) + decorator_chain_t::get_size_needed( args... );
+#ifdef HAS_MCD
+      void * result  = allocator_t::instance()->allocate( size_to_allocate, use_mcd );
+#else
       void * result  = allocator_t::instance()->allocate( size_to_allocate );
+#endif
       result = validator_chain_t::decorate( result );
       result = decorator_chain_t::decorate( result, size, args... );
       validator_chain_t::decorate( ( void * const ) ( ( byte * ) result + size ) );
@@ -89,34 +106,76 @@ namespace tuddbs {
    }
 
    template< class... Args >
-   void release_impl( void * const p, char const * file_name, std::size_t line_number ) {
+   void release_impl(
+      void * const p,
+#ifdef HAS_MCD
+      bool use_mcd,
+#endif
+      char const * file_name, std::size_t line_number
+   ) {
 //      std::cout << "Release called: " << file_name << ":" << line_number << "\n";
       inspect_impl( p, file_name, line_number );
       void * const ptr_front = validator_chain_t::get_root( decorator_chain_t::get_root( p ) );
+#ifdef HAS_MCD
+      allocator_t::instance()->deallocate( ptr_front, use_mcd );
+#else
       allocator_t::instance()->deallocate( ptr_front );
+#endif
    }
-#define acquire(size, alignment) acquire_impl(size, alignment, __FILE__, __LINE__)
-#define release( ptr ) release_impl(ptr, __FILE__, __LINE__)
+
+#ifdef HAS_MCD
+#  define acquire(size, use_mcdram, alignment) acquire_impl(size, use_mcdram, alignment, __FILE__, __LINE__)
+#  define release( ptr, use_mcdram ) release_impl(ptr, use_mcdram, __FILE__, __LINE__)
+#else
+#  define acquire(size, alignment) acquire_impl(size, alignment, __FILE__, __LINE__)
+#  define release( ptr ) release_impl(ptr, __FILE__, __LINE__)
+#endif
+
 #define inspect( ptr ) inspect_impl(ptr, __FILE__, __LINE__)
 #else
    using decorator_chain_t =
       alignment_decorator<
          null_decorator
       >;
-   using allocator_t = dram_allocator;
 
    template< class... Args >
-   void * acquire_impl( std::size_t size, Args... args ) {
+   void * acquire_impl(
+      std::size_t size,
+#ifdef HAS_MCD
+      bool use_mcd,
+#endif
+      Args... args
+   ) {
       std::size_t size_to_allocate = size + decorator_chain_t::get_size_needed( args... );
+#ifdef HAS_MCD
+      void * result  = allocator_t::instance()->allocate( size_to_allocate, use_mcd );
+#else
       void * result  = allocator_t::instance()->allocate( size_to_allocate );
+#endif
       return decorator_chain_t::decorate( result, size, args... );
    }
-   void release_impl( void * const p ) {
+   void release_impl(
+      void * const p
+#ifdef HAS_MCD
+      , bool use_mcd
+#endif
+   ) {
       void * const ptr_front = decorator_chain_t::get_root( p ) ;
+#ifdef HAS_MCD
+      allocator_t::instance()->deallocate( ptr_front, use_mcd );
+#else
       allocator_t::instance()->deallocate( ptr_front );
+#endif
    }
-#define acquire(size, alignment) acquire_impl(size, alignment)
-#define release( ptr ) release_impl( ptr )
+
+#ifdef HAS_MCD
+#  define acquire(size, use_mcdram, alignment) acquire_impl(size, use_mcdram, alignment)
+#  define release( ptr, use_mcdram ) release_impl(ptr, use_mcdram)
+#else
+#  define acquire(size, alignment) acquire_impl(size, alignment)
+#  define release( ptr ) release_impl(ptr)
+#endif
+
 #define inspect( ptr )
 #endif
 
