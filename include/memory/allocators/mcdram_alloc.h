@@ -31,7 +31,18 @@ namespace tuddbs {
       public:
          void * allocate( std::size_t size, bool use_mcd ) {
             if( use_mcd ) {
-               return hbw_malloc( size );
+               hbw_set_policy( HBW_POLICY_BIND );
+               if( hbw_get_policy() != HBW_POLICY_BIND ) {
+                  std::cerr << "POLICY COUNT NOT SET PROPERLY\n";
+                  exit(1 );
+               }
+               void * result = hbw_malloc( size );
+               int verify_result = hbw_verify_memory_region( result, size, HBW_TOUCH_PAGES );
+               if( verify_result != 0 ) {
+                  std::cerr << "HBW Verify Mem Region failed with code: " << verify_result << "\n";
+                  exit( 1 );
+               }
+               return result;
             }
             return malloc( size );
          }

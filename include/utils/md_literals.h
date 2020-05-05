@@ -18,7 +18,7 @@
 #define TUDDBS_MEMORYDECORATOR_INCLUDE_UTILS_MD_LITERALS_H
 
 namespace tuddbs {
-   constexpr long double operator"" _KB( unsigned long long int bytes ) {
+   constexpr std::size_t operator"" _KB( unsigned long long int bytes ) {
       return bytes * 1024;
    }
 }

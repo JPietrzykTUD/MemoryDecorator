@@ -23,6 +23,7 @@
 #include <cstddef>
 #include <cstring>
 #include <string>
+#include <sstream>
 
 #include <iostream>
 
@@ -50,8 +51,14 @@ namespace tuddbs {
             byte * ptr = ( byte * ) NestedDecorator::decorate( p, args... );
             byte * ptr_orig = ptr;
             ptr += offset_from_start;
-            std::string debug_string( file_name );
-            debug_string += ":" + std::to_string( line_number );
+            std::stringstream debug_stringstream;
+//            std::cerr << file_name << " - " << line_number << "\n";
+//            std::string debug_string( file_name );
+//            std::cerr << file_name << "\n";
+//            std::cerr << std::to_string(line_number) << "\n";
+//            debug_string += ":" + std::to_string( line_number );
+            debug_stringstream << file_name << ":" << line_number;
+            std::string debug_string = debug_stringstream.str();
             std::size_t length = debug_string.length();
             std::memcpy( ( void * ) ptr, ( void const * ) &length, sizeof( std::size_t ) );
             std::memcpy( ( void * ) ( ptr + sizeof( std::size_t ) ), ( void const * )debug_string.c_str(), debug_string.length() );
