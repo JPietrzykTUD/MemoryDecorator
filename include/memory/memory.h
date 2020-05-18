@@ -73,15 +73,15 @@ namespace tuddbs {
 #endif
       result = validator_chain_t::decorate( result );
       result = decorator_chain_t::decorate( result, size, args... );
-      validator_chain_t::decorate( ( void * const ) ( ( byte * ) result + size ) );
+      validator_chain_t::decorate( ( void * ) ( ( byte * ) result + size ) );
       return result;
    }
 
    template< class... Args >
    bool inspect_impl( void * const p, UNUSED char const * file_name, UNUSED std::size_t line_number ) {
-      std::cout << "Inspect called: " << file_name << ":" << line_number << "\n";
+//      std::cout << "Inspect called: " << file_name << ":" << line_number << "\n";
       std::size_t requested_size = decorator_chain_t::get_size_from_ptr( p );
-      void * const ptr_back = ( void * const ) ( ( byte * ) p + requested_size );
+      void * const ptr_back = ( void * ) ( ( byte * ) p + requested_size );
       void * const ptr_front = validator_chain_t::get_root( decorator_chain_t::get_root( p ) );
       bool result_back, result_front;
       std::tie( result_back, std::ignore ) = validator_chain_t::validate( ptr_back );

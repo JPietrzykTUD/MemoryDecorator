@@ -71,7 +71,7 @@ namespace tuddbs {
             byte tmp[ sizeof( std::size_t ) ];
             std::memcpy( ( void * ) tmp, ( void const * )ptr, sizeof( std::size_t ) );
             std::size_t length = *(( std::size_t *) tmp);
-            std::string message_string( ( char * const ) ( ptr + sizeof( std::size_t ) ), ( char * const ) ( ptr + sizeof( std::size_t ) + length ) );
+            std::string message_string( ( char * ) ( ptr + sizeof( std::size_t ) ), ( char * ) ( ptr + sizeof( std::size_t ) + length ) );
             std::cerr << "Additional Info: " << message_string << ". ";
             ptr_orig += ( get_own_size_needed( )  );
             return ( void * ) ptr_orig;
@@ -80,7 +80,7 @@ namespace tuddbs {
          static void * get_root( void * const p ) {
             byte * ptr = ( byte * ) p;
             ptr -= ( get_own_size_needed( ) );
-            return NestedDecorator::get_root( ( void * const ) ptr );
+            return NestedDecorator::get_root( ( void * ) ptr );
          }
    };
 }

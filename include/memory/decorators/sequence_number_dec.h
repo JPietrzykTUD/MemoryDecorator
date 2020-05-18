@@ -68,7 +68,7 @@ namespace tuddbs {
          static void * get_root( void * const p ) {
             byte * ptr = ( byte * ) p;
             ptr -= ( get_own_size_needed( ) );
-            return NestedDecorator::get_root( ( void * const ) ptr );
+            return NestedDecorator::get_root( ( void * ) ptr );
          }
    };
 }
