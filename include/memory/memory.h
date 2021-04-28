@@ -125,10 +125,10 @@ namespace tuddbs {
 
 #ifdef HAS_MCD
 #  define acquire(size, use_mcdram, alignment) acquire_impl(size, use_mcdram, alignment, __FILE__, __LINE__)
-#  define release( ptr, use_mcdram ) release_impl(ptr, use_mcdram, __FILE__, __LINE__)
+#  define release_ptr( ptr, use_mcdram ) release_impl(ptr, use_mcdram, __FILE__, __LINE__)
 #else
 #  define acquire(size, alignment) acquire_impl(size, alignment, __FILE__, __LINE__)
-#  define release( ptr ) release_impl(ptr, __FILE__, __LINE__)
+#  define release_ptr( ptr ) release_impl(ptr, __FILE__, __LINE__)
 #endif
 
 #define inspect( ptr ) inspect_impl(ptr, __FILE__, __LINE__)
@@ -170,10 +170,10 @@ namespace tuddbs {
 
 #ifdef HAS_MCD
 #  define acquire(size, use_mcdram, alignment) acquire_impl(size, use_mcdram, alignment)
-#  define release( ptr, use_mcdram ) release_impl(ptr, use_mcdram)
+#  define release_ptr( ptr, use_mcdram ) release_impl(ptr, use_mcdram)
 #else
 #  define acquire(size, alignment) acquire_impl(size, alignment)
-#  define release( ptr ) release_impl(ptr)
+#  define release_ptr( ptr ) release_impl(ptr)
 #endif
 
 #define inspect( ptr )
